@@ -1,6 +1,7 @@
 package all.newspapers.news.fragments;
 
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 
 /**
@@ -9,8 +10,8 @@ import com.google.firebase.database.Query;
 
 public class MagazineFragment extends NewsBaseFragment {
     @Override
-    public Query getQuery(DatabaseReference databaseReference) {
-        Query recentPostsQuery = databaseReference.child("news");
+    public Query getQuery(FirebaseDatabase databaseReference) {
+        Query recentPostsQuery = databaseReference.getReference("news").orderByChild("type").equalTo("magazine");
         return recentPostsQuery;
     }
 }

@@ -24,6 +24,7 @@ import all.newspapers.news.viewholder.NewsViewHolder;
  */
 public abstract class NewsBaseFragment extends Fragment {
     private DatabaseReference mDatabase;
+    private FirebaseDatabase database;
     // [END define_database_reference]
 
     private FirebaseRecyclerAdapter<NewsModel, NewsViewHolder> mAdapter;
@@ -39,7 +40,7 @@ public abstract class NewsBaseFragment extends Fragment {
         super.onCreateView(inflater, container, savedInstanceState);
 
         if (mDatabase == null) {
-            FirebaseDatabase database = FirebaseDatabase.getInstance();
+            database = FirebaseDatabase.getInstance();
             // database.setPersistenceEnabled(true);
             mDatabase = database.getReference();
         }
@@ -58,13 +59,13 @@ public abstract class NewsBaseFragment extends Fragment {
 
         // Set up Layout Manager, reverse layout
         mManager = new LinearLayoutManager(getActivity());
-        mManager.setReverseLayout(true);
-        mManager.setStackFromEnd(true);
+        //mManager.setReverseLayout(true);
+        mManager.setStackFromEnd(false);
         mRecycler.setLayoutManager(mManager);
 
         // Set up FirebaseRecyclerAdapter with the Query
-        Query postsQuery = getQuery(mDatabase);
-        Log.e("Query", postsQuery.orderByValue().toString());
+        Query postsQuery = getQuery(database);
+        Log.e("Query", postsQuery+"");
         mAdapter = new FirebaseRecyclerAdapter<NewsModel, NewsViewHolder>(NewsModel.class, R.layout.news_item,
                 NewsViewHolder.class, postsQuery) {
             @Override
@@ -85,7 +86,7 @@ public abstract class NewsBaseFragment extends Fragment {
         super.onDestroyView();
     }
 
-    public abstract Query getQuery(DatabaseReference databaseReference);
+    public abstract Query getQuery(FirebaseDatabase databaseReference);
 
 
 }
