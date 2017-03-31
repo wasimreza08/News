@@ -1,6 +1,7 @@
 package all.newspapers.news;
 
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -8,6 +9,8 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.RelativeLayout;
+
+import all.newspapers.news.fragments.HomeFragment;
 
 public class MainActivity extends AppCompatActivity {
     private DrawerLayout drawerLayout;
@@ -44,8 +47,16 @@ public class MainActivity extends AppCompatActivity {
         //calling sync state is necessay or else your hamburger icon wont show up
         actionBarDrawerToggle.syncState();
 
+        FragmentTransaction fragTransaction = getSupportFragmentManager().beginTransaction();
+        //NewsFragment base = new NewsFragment();
+        HomeFragment base = new HomeFragment();
+        fragTransaction.add(content.getId(), base, "uniqueTag").addToBackStack("uniqueTag");
+        fragTransaction.commit();
+        setSupportActionBar(toolbar);
+
 
     }
+
 
 
 }

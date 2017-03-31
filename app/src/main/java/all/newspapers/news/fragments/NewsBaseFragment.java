@@ -64,7 +64,7 @@ public abstract class NewsBaseFragment extends Fragment {
 
         // Set up FirebaseRecyclerAdapter with the Query
         Query postsQuery = getQuery(mDatabase);
-        Log.e("Query", postsQuery.toString() + " null");
+        Log.e("Query", postsQuery.orderByValue().toString());
         mAdapter = new FirebaseRecyclerAdapter<NewsModel, NewsViewHolder>(NewsModel.class, R.layout.news_item,
                 NewsViewHolder.class, postsQuery) {
             @Override

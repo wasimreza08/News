@@ -30,9 +30,9 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.home_fragment, container, false);
         viewPager = (ViewPager) rootView.findViewById(R.id.viewpager);
-        setupViewPager(viewPager);
         tabLayout = (TabLayout) rootView.findViewById(R.id.tabs);
-        tabLayout.setupWithViewPager(viewPager);
+
+        setupViewPager(viewPager);
         rootView.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
@@ -44,6 +44,8 @@ public class HomeFragment extends Fragment {
                 return false;
             }
         });
+
+        tabLayout.setupWithViewPager(viewPager);
 
         return rootView;
     }
@@ -85,8 +87,8 @@ public class HomeFragment extends Fragment {
 
     private void setupViewPager(ViewPager viewPager) {
         adapter = new ViewPagerAdapter(getActivity().getSupportFragmentManager());
-       // adapter.addFragment(new NationalTeamFixtureFragment(), getResources().getString(R.string.fixture));
-       // adapter.addFragment(new NationalTeamSquard(), getResources().getString(R.string.squad));
+        adapter.addFragment(new NewsFragment(), getResources().getString(R.string.news_paper));
+        adapter.addFragment(new MagazineFragment(), getResources().getString(R.string.magazine));
         // adapter.addFragment(new UpcomingFixture(), OnPreferenceManager.getInstance(this).getUpcomingTitle());
         viewPager.setAdapter(adapter);
     }

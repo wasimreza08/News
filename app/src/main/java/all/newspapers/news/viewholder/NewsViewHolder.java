@@ -22,7 +22,6 @@ public class NewsViewHolder extends RecyclerView.ViewHolder {
     public TextView mTextViewTitle, mTextViewDetail;
     private ProgressBar mProgressBar;
     public RelativeLayout itemCard;
-    ArrayList<String> favItems = new ArrayList<>();
 
     public NewsViewHolder(View itemView) {
         super(itemView);

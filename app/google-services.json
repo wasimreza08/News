@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "990069597577",
+    "firebase_url": "https://world-news-1563b.firebaseio.com",
+    "project_id": "world-news-1563b",
+    "storage_bucket": "world-news-1563b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:990069597577:android:fbda7236f07b6557",
+        "android_client_info": {
+          "package_name": "all.newspapers.news"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "990069597577-r49cn1uqkq8uoe8b9mdnk1sgr70talsk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAp4JHBvARuxwwCHk6Sy-hSuRuxmjCI_Ho"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
