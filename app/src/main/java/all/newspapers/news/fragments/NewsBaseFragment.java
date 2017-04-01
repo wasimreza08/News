@@ -15,8 +15,12 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 
+import java.util.ArrayList;
+
 import all.newspapers.news.R;
 import all.newspapers.news.model.NewsModel;
+import all.newspapers.news.onlclick.RecyclerItemClickListener;
+import all.newspapers.news.preference.SharedPreference;
 import all.newspapers.news.viewholder.NewsViewHolder;
 
 /**
@@ -66,13 +70,26 @@ public abstract class NewsBaseFragment extends Fragment {
         // Set up FirebaseRecyclerAdapter with the Query
         Query postsQuery = getQuery(database);
         Log.e("Query", postsQuery+"");
+        final ArrayList<NewsModel> fav = SharedPreference.getInstance(getActivity().getApplicationContext()).loadFavorites(getActivity().getApplicationContext());
         mAdapter = new FirebaseRecyclerAdapter<NewsModel, NewsViewHolder>(NewsModel.class, R.layout.news_item,
                 NewsViewHolder.class, postsQuery) {
             @Override
             protected void populateViewHolder(final NewsViewHolder viewHolder, final NewsModel model, final int position) {
                 // Bind Post to ViewHolder, setting OnClickListener for the star button
                 mProgressBar.setVisibility(View.GONE);
+                model.setFavorite(false);
+                for (NewsModel news : fav) {
+                    if (news.getLink().equals(model.getLink())) {
+                        model.setFavorite(true);
+                    }
+                }
+              /*  if(fav.contains(model)){
+                    model.setFavorite(true);
+                }else{
+                    model.setFavorite(false);
+                }*/
                 viewHolder.bindToPost(model, getActivity());
+
             }
         };
         mRecycler.setAdapter(mAdapter);

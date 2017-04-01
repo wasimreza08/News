@@ -8,6 +8,16 @@ public class NewsModel {
     private String title;
     private String link;
 
+    public boolean isFavorite() {
+        return isFavorite;
+    }
+
+    public void setFavorite(boolean favorite) {
+        isFavorite = favorite;
+    }
+
+    private boolean isFavorite;
+
     public String getTitle() {
         return title;
     }

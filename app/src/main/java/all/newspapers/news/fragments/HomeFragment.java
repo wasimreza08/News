@@ -89,6 +89,7 @@ public class HomeFragment extends Fragment {
         adapter = new ViewPagerAdapter(getActivity().getSupportFragmentManager());
         adapter.addFragment(new NewsFragment(), getResources().getString(R.string.news_paper));
         adapter.addFragment(new MagazineFragment(), getResources().getString(R.string.magazine));
+        adapter.addFragment(new FavoriteFragment(), getResources().getString(R.string.fav));
         // adapter.addFragment(new UpcomingFixture(), OnPreferenceManager.getInstance(this).getUpcomingTitle());
         viewPager.setAdapter(adapter);
     }
