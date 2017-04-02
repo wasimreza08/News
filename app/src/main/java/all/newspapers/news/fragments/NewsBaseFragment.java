@@ -16,6 +16,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 
 import java.util.ArrayList;
+import java.util.Observer;
 
 import all.newspapers.news.R;
 import all.newspapers.news.model.NewsModel;

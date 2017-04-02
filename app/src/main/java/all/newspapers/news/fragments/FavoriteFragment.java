@@ -23,10 +23,13 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 
 import all.newspapers.news.R;
 import all.newspapers.news.adapter.FavoriteAdapter;
 import all.newspapers.news.model.NewsModel;
+import all.newspapers.news.observer.FilterManager;
 import all.newspapers.news.onlclick.RecyclerItemClickListener;
 import all.newspapers.news.preference.SharedPreference;
 
@@ -34,7 +37,7 @@ import all.newspapers.news.preference.SharedPreference;
  * Created by ASUS on 4/1/2017.
  */
 
-public class FavoriteFragment extends Fragment {
+public class FavoriteFragment extends Fragment implements Observer {
 
     private RecyclerView mRecycler;
     private ProgressBar mProgressBar;
@@ -140,6 +143,19 @@ public class FavoriteFragment extends Fragment {
     }
 
     @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if(isVisibleToUser){
+            Log.e("Fragment", "FavoriteFragment visible" +isVisibleToUser);
+        }
+
+    }
+
+    public void searchQuery(String query){
+
+    }
+
+    @Override
     public void onDestroy() {
         prefs.unregisterOnSharedPreferenceChangeListener(listener);
         getActivity().unregisterReceiver(responseReceiver);
@@ -148,6 +164,14 @@ public class FavoriteFragment extends Fragment {
 
     private TextView notLoaded(){
         return (TextView) rootView.findViewById(R.id.not_loaded);
+    }
+
+    @Override
+    public void update(Observable observable, Object o) {
+        if (observable instanceof FilterManager) {
+            String result = ((FilterManager) observable).getQuery(); // retrieve the search value
+            Log.e("query", result);
+        }
     }
 
   /*  @Override
