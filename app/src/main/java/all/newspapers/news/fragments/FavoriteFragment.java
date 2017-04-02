@@ -169,8 +169,22 @@ public class FavoriteFragment extends Fragment implements Observer {
     @Override
     public void update(Observable observable, Object o) {
         if (observable instanceof FilterManager) {
-            String result = ((FilterManager) observable).getQuery(); // retrieve the search value
-            Log.e("query", result);
+            String query = ((FilterManager) observable).getQuery(); // retrieve the search value
+            Log.e("query", query);
+            mAdapter.filterData(query);
+           /* if(query.isEmpty()){
+                mAdapter.addItem(favList);
+                return;
+            }
+            ArrayList<NewsModel> backup = new ArrayList<>();
+            backup.addAll(favList);
+            favList.clear();
+            for(int i = 0; i < backup.size(); i++){
+                if(backup.get(i).getTitle().toLowerCase().equalsIgnoreCase(query)){
+                    favList.add(backup.get(i));
+                }
+            }
+            mAdapter.addItem(favList);*/
         }
     }
 

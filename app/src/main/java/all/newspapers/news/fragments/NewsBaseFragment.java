@@ -11,14 +11,19 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Observer;
 
 import all.newspapers.news.R;
+import all.newspapers.news.adapter.CommonNewsAdapter;
 import all.newspapers.news.model.NewsModel;
 import all.newspapers.news.onlclick.RecyclerItemClickListener;
 import all.newspapers.news.preference.SharedPreference;
@@ -33,6 +38,8 @@ public abstract class NewsBaseFragment extends Fragment {
     // [END define_database_reference]
 
     private FirebaseRecyclerAdapter<NewsModel, NewsViewHolder> mAdapter;
+    CommonNewsAdapter adapter;
+    ArrayList<NewsModel> mList = new ArrayList<>();
     private RecyclerView mRecycler;
     private ProgressBar mProgressBar;
     private LinearLayoutManager mManager;
@@ -71,7 +78,43 @@ public abstract class NewsBaseFragment extends Fragment {
         // Set up FirebaseRecyclerAdapter with the Query
         Query postsQuery = getQuery(database);
         Log.e("Query", postsQuery+"");
+        adapter = new CommonNewsAdapter(getActivity(), mList);
         final ArrayList<NewsModel> fav = SharedPreference.getInstance(getActivity().getApplicationContext()).loadFavorites(getActivity().getApplicationContext());
+        postsQuery.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                NewsModel newPost = dataSnapshot.getValue(NewsModel.class);
+                //mList.add(newPost);
+                newPost.setFavorite(false);
+                for (NewsModel news : fav) {
+                    if (news.getLink().equals(newPost.getLink())) {
+                        newPost.setFavorite(true);
+                    }
+                }
+                adapter.addItem(newPost);
+                mProgressBar.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
         mAdapter = new FirebaseRecyclerAdapter<NewsModel, NewsViewHolder>(NewsModel.class, R.layout.news_item,
                 NewsViewHolder.class, postsQuery) {
             @Override
@@ -93,7 +136,7 @@ public abstract class NewsBaseFragment extends Fragment {
 
             }
         };
-        mRecycler.setAdapter(mAdapter);
+        mRecycler.setAdapter(adapter);
     }
 
     @Override

@@ -16,6 +16,7 @@ import all.newspapers.news.observer.FilterManager;
  */
 
 public class MagazineFragment extends NewsBaseFragment implements Observer {
+    private boolean isVisible;
     @Override
     public Query getQuery(FirebaseDatabase databaseReference) {
         Query recentPostsQuery = databaseReference.getReference("news").orderByChild("type").equalTo("magazine");
@@ -25,19 +26,21 @@ public class MagazineFragment extends NewsBaseFragment implements Observer {
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
+        isVisible = isVisibleToUser;
         if(isVisibleToUser)
         Log.e("Fragment", "MagazineFragment visible");
-
-    }
-    public void searchQuery(String query){
 
     }
 
     @Override
     public void update(Observable observable, Object o) {
+        if(!isVisible){
+            return;
+        }
         if (observable instanceof FilterManager) {
             String result = ((FilterManager) observable).getQuery(); // retrieve the search value
-            Log.e("query", result);
+            Log.e("maga query", result);
+            this.adapter.filterData(result);
         }
     }
 }

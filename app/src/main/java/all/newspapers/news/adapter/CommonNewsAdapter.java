@@ -5,8 +5,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Filter;
-import android.widget.Filterable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,15 +14,15 @@ import all.newspapers.news.model.NewsModel;
 import all.newspapers.news.viewholder.NewsViewHolder;
 
 /**
- * Created by ASUS on 4/1/2017.
+ * Created by ASUS on 4/2/2017.
  */
 
-public class FavoriteAdapter extends RecyclerView.Adapter<NewsViewHolder> {
+public class CommonNewsAdapter extends RecyclerView.Adapter<NewsViewHolder> {
     private ArrayList<NewsModel> mList;
     private ArrayList<NewsModel> filterList = new ArrayList<>();
     private Context mContext;
 
-    public FavoriteAdapter(Context context, ArrayList<NewsModel> list) {
+    public CommonNewsAdapter(Context context, ArrayList<NewsModel> list) {
         mContext = context;
         mList = list;
         filterList.addAll(list);
@@ -34,13 +32,15 @@ public class FavoriteAdapter extends RecyclerView.Adapter<NewsViewHolder> {
     public NewsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.news_item, null);
         NewsViewHolder viewHolder = new NewsViewHolder(view);
+
         return viewHolder;
     }
 
     @Override
     public void onBindViewHolder(NewsViewHolder holder, int position) {
+        holder.bindToPost(mList.get(position), mContext);
         holder.mTextViewTitle.setText(mList.get(position).getTitle());
-        holder.favIcon.setImageDrawable(mContext.getResources().getDrawable(R.mipmap.love_icon4));
+        //holder.favIcon.setImageDrawable(mContext.getResources().getDrawable(R.mipmap.love_icon4));
     }
 
     public void removeItem(int position) {
@@ -56,8 +56,24 @@ public class FavoriteAdapter extends RecyclerView.Adapter<NewsViewHolder> {
         notifyDataSetChanged();
     }
 
+    public void addItem(NewsModel item) {
+        //   mList.clear();
+        for(NewsModel model : mList){
+            if(item.getLink().equals(model.getLink())){
+                return;
+            }
+        }
+        mList.add(item);
+        notifyItemInserted(mList.size() - 1);
+
+       // notifyDataSetChanged();
+    }
+
     public void filterData(String query) {
         //  ArrayList<NewsModel> backup = new ArrayList<>();
+        if(filterList.isEmpty()){
+            filterList.addAll(mList);
+        }
         query = query.toLowerCase();
         mList.clear();
         if (query.isEmpty()) {

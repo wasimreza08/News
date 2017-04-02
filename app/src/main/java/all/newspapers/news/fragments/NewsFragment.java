@@ -34,9 +34,6 @@ public class NewsFragment extends NewsBaseFragment implements Observer {
 
     }
 
-    public void searchQuery(String query) {
-
-    }
 
 
     @Override
@@ -44,6 +41,8 @@ public class NewsFragment extends NewsBaseFragment implements Observer {
         if (observable instanceof FilterManager) {
             String result = ((FilterManager) observable).getQuery(); // retrieve the search value
             Log.e("query", result);
+            this.adapter.filterData(result);
+
         }
     }
 }
