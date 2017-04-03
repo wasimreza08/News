@@ -91,6 +91,10 @@ public class MainActivity extends AppCompatActivity {
         fragTransaction.commit();*/
         setSupportActionBar(toolbar);
         tabLayout.setupWithViewPager(viewPager);
+        TabLayout.Tab tab = tabLayout.getTabAt(1);
+        if (tab != null) {
+            tab.select();
+        }
 
     }
 
@@ -149,9 +153,10 @@ public class MainActivity extends AppCompatActivity {
         MagazineFragment magazineFragment = new MagazineFragment();
         FavoriteFragment favoriteFragment = new FavoriteFragment();
         adapter = new ViewPagerAdapter(this, getSupportFragmentManager(), filterManager);
+        adapter.addFragment(favoriteFragment, favoriteFragment, getResources().getString(R.string.fav));
         adapter.addFragment(newsFragment, newsFragment, getResources().getString(R.string.news_paper));
         adapter.addFragment(magazineFragment, magazineFragment, getResources().getString(R.string.magazine));
-        adapter.addFragment(favoriteFragment, favoriteFragment, getResources().getString(R.string.fav));
+
         // adapter.addFragment(new UpcomingFixture(), OnPreferenceManager.getInstance(this).getUpcomingTitle());
         viewPager.setAdapter(adapter);
     }
