@@ -1,6 +1,9 @@
 package all.newspapers.news;
 
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -10,12 +13,17 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
@@ -186,15 +194,70 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
-    public void aliveFragment(Fragment alive){
-        if(alive instanceof NewsFragment){
 
-        }else if(alive instanceof MagazineFragment){
+    private void linkSuggestion(){
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                this);
 
-        }else if(alive instanceof FavoriteFragment){
+        LayoutInflater inflater = this.getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.dialog_text, null);
+        alertDialogBuilder.setView(dialogView);
 
-        }
+        final EditText editText = (EditText) dialogView.findViewById(R.id.edit_suggestion);
+
+        // set title
+        alertDialogBuilder.setTitle("Suggestion");
+
+        // set dialog message
+        alertDialogBuilder
+                .setMessage("Suggest any link that you think the app should contains.")
+                .setCancelable(false)
+                .setPositiveButton("Send",new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // if this button is clicked, close
+                        // current activity
+                       // MainActivity.this.finish();
+                        sendMail(editText.getText().toString());
+                    }
+                })
+                .setNegativeButton("No",new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog,int id) {
+                        // if this button is clicked, just close
+                        // the dialog box and do nothing
+                        dialog.cancel();
+                    }
+                });
+
+        // create alert dialog
+        AlertDialog alertDialog = alertDialogBuilder.create();
+
+        // show it
+        alertDialog.show();
     }
+
+
+
+   private void sendMail(String body){
+       Log.i("Send email", "");
+       String[] TO = {"wasimreza0807021@gmail.com"};
+       String[] CC = {""};
+       Intent emailIntent = new Intent(Intent.ACTION_SEND);
+
+       emailIntent.setData(Uri.parse("mailto:"));
+       emailIntent.setType("text/plain");
+       emailIntent.putExtra(Intent.EXTRA_EMAIL, TO);
+       //emailIntent.putExtra(Intent.EXTRA_CC, CC);
+       emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Your subject");
+       emailIntent.putExtra(Intent.EXTRA_TEXT, body);
+
+       try {
+           startActivity(Intent.createChooser(emailIntent, "Send mail..."));
+           //finish();
+           Log.i("Finished  email...", "");
+       } catch (android.content.ActivityNotFoundException ex) {
+           Toast.makeText(MainActivity.this, "There is no email client installed.", Toast.LENGTH_SHORT).show();
+       }
+   }
 
     @Override
     public void onBackPressed() {
@@ -211,25 +274,16 @@ public class MainActivity extends AppCompatActivity {
             case R.id.action_search:
                // onSearchRequested(item);
                 return true;
+
+            case R.id.action_add:
+                // onSearchRequested(item);
+                //sendMail("test mail");
+                linkSuggestion();
+                return true;
             default:
                 return false;
         }
     }
 
-
-
-    public boolean onSearchRequested(MenuItem item) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-          //  MenuItem mi = item.findItem(R.id.search);
-            if(item.isActionViewExpanded()){
-                item.collapseActionView();
-            } else{
-                item.expandActionView();
-            }
-        } else{
-            //onOptionsItemSelected(mMenu.findItem(R.id.search));
-        }
-        return super.onSearchRequested();
-    }
 
 }
