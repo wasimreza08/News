@@ -1,3 +1,4 @@
+
 package all.newspapers.news.viewholder;
 
 import android.content.Context;
@@ -37,7 +38,8 @@ public class NewsViewHolder extends RecyclerView.ViewHolder {
 
     }
 
-    public void bindToPost(final NewsModel post, /*View.OnClickListener starClickListener,*/ final Context context) {
+    public void bindToPost(final NewsModel post,
+            /* View.OnClickListener starClickListener, */ final Context context) {
         mTextViewTitle.setText(post.getTitle());
         if (post.isFavorite()) {
             favIcon.setImageDrawable(context.getResources().getDrawable(R.mipmap.love_icon4));
@@ -48,64 +50,24 @@ public class NewsViewHolder extends RecyclerView.ViewHolder {
             @Override
             public void onClick(View view) {
 
-                new FinestWebView.Builder(context).theme(R.style.FinestWebViewTheme)
-                        .titleDefault(post.getTitle())
-                        .showUrl(false)
-                        .statusBarColorRes(R.color.bluePrimaryDark)
-                        .toolbarColorRes(R.color.bluePrimary)
-                        .titleColorRes(R.color.finestWhite)
-                        .urlColorRes(R.color.bluePrimaryLight)
-                        .iconDefaultColorRes(R.color.finestWhite)
-                        .progressBarColorRes(R.color.finestWhite)
-                        .stringResCopiedToClipboard(R.string.copied_to_clipboard)
-                        .stringResCopiedToClipboard(R.string.copied_to_clipboard)
-                        .stringResCopiedToClipboard(R.string.copied_to_clipboard)
-                        .showSwipeRefreshLayout(true)
-                        .swipeRefreshColorRes(R.color.bluePrimaryDark)
-                        .menuSelector(R.drawable.selector_light_theme)
-                        .menuTextGravity(Gravity.CENTER)
-                        .menuTextPaddingRightRes(R.dimen.defaultMenuTextPaddingLeft)
-                        .dividerHeight(0)
-                        .gradientDivider(false)
-                        .setCustomAnimations(R.anim.slide_up, R.anim.hold, R.anim.hold, R.anim.slide_down)
-                        .show(post.getLink());
-              /*  new FinestWebView.Builder(context).theme(R.style.FinestWebViewTheme)
-                        .titleDefault(post.getTitle())
-                        .showUrl(false)
-                        .statusBarColorRes(R.color.Color_AntiqueWhite)
-                        .toolbarColorRes(R.color.bluePrimary)
-                        .titleColorRes(R.color.finestWhite)
-                        .urlColorRes(R.color.bluePrimaryLight)
-                        .iconDefaultColorRes(R.color.finestWhite)
-                        .progressBarColorRes(R.color.finestWhite)
-                        .stringResCopiedToClipboard(R.string.copied_to_clipboard)
-                        .stringResCopiedToClipboard(R.string.copied_to_clipboard)
-                        .stringResCopiedToClipboard(R.string.copied_to_clipboard)
-                        .showSwipeRefreshLayout(true)
-                        .swipeRefreshColorRes(R.color.bluePrimaryDark)
-                        .menuSelector(R.drawable.selector_light_theme)
-                        .menuTextGravity(Gravity.CENTER)
-                        .menuTextPaddingRightRes(R.dimen.defaultMenuTextPaddingLeft)
-                        .dividerHeight(0)
-                        .gradientDivider(false)
-                        .setCustomAnimations(R.anim.slide_up, R.anim.hold, R.anim.hold, R.anim.slide_down)
-                        .show(post.getLink());*/
-                //new FinestWebView.Builder(context).show(post.getLink());
+                loadWebView(post, context);
             }
         });
         favIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (post.isFavorite()) {
-                    favIcon.setImageDrawable(context.getResources().getDrawable(R.mipmap.love_icon3));
+                    favIcon.setImageDrawable(
+                            context.getResources().getDrawable(R.mipmap.love_icon3));
                     post.setFavorite(false);
                     // favItems.remove(post.getLink());
                     SharedPreference.getInstance(context).removeFavorite(context, post);
 
-                }else{
-                    favIcon.setImageDrawable(context.getResources().getDrawable(R.mipmap.love_icon4));
+                } else {
+                    favIcon.setImageDrawable(
+                            context.getResources().getDrawable(R.mipmap.love_icon4));
                     post.setFavorite(true);
-                    SharedPreference.getInstance(context).addFavorite(context,post);
+                    SharedPreference.getInstance(context).addFavorite(context, post);
                 }
 
                 sendBroadcast(post, context);
@@ -113,12 +75,51 @@ public class NewsViewHolder extends RecyclerView.ViewHolder {
             }
         });
     }
-    private void sendBroadcast(NewsModel newspaper, Context context){
+
+    public void bindToPostFav(final NewsModel post,
+            /* View.OnClickListener starClickListener, */ final Context context) {
+
+        itemCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                loadWebView(post, context);
+
+            }
+        });
+
+    }
+
+    private void loadWebView(NewsModel post, Context context) {
+        new FinestWebView.Builder(context).theme(R.style.FinestWebViewTheme)
+                .titleDefault(post.getTitle())
+                .showUrl(false)
+                .statusBarColorRes(R.color.bluePrimaryDark)
+                .toolbarColorRes(R.color.bluePrimary)
+                .titleColorRes(R.color.finestWhite)
+                .urlColorRes(R.color.bluePrimaryLight)
+                .iconDefaultColorRes(R.color.finestWhite)
+                .progressBarColorRes(R.color.finestWhite)
+                .stringResCopiedToClipboard(R.string.copied_to_clipboard)
+                .stringResCopiedToClipboard(R.string.copied_to_clipboard)
+                .stringResCopiedToClipboard(R.string.copied_to_clipboard)
+                .showSwipeRefreshLayout(true)
+                .swipeRefreshColorRes(R.color.bluePrimaryDark)
+                .menuSelector(R.drawable.selector_light_theme)
+                .menuTextGravity(Gravity.CENTER)
+                .menuTextPaddingRightRes(R.dimen.defaultMenuTextPaddingLeft)
+                .dividerHeight(0)
+                .gradientDivider(false)
+                .setCustomAnimations(R.anim.slide_up, R.anim.hold, R.anim.hold, R.anim.slide_down)
+                .show(post.getLink());
+    }
+
+    private void sendBroadcast(NewsModel newspaper, Context context) {
         Intent intent = new Intent();
         intent.setAction("com.example.broadcast.MY_NOTIFICATION");
-       /* Bundle bundle = new Bundle();
-        bundle.putSerializable("value", (Serializable) newspaper);
-        intent.putExtras(bundle);*/
+        /*
+         * Bundle bundle = new Bundle(); bundle.putSerializable("value", (Serializable) newspaper);
+         * intent.putExtras(bundle);
+         */
         context.sendBroadcast(intent);
     }
 }

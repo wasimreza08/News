@@ -13,6 +13,7 @@ import java.util.List;
 
 import all.newspapers.news.R;
 import all.newspapers.news.model.NewsModel;
+import all.newspapers.news.preference.SharedPreference;
 import all.newspapers.news.viewholder.NewsViewHolder;
 
 /**
@@ -38,9 +39,31 @@ public class FavoriteAdapter extends RecyclerView.Adapter<NewsViewHolder> {
     }
 
     @Override
-    public void onBindViewHolder(NewsViewHolder holder, int position) {
-        holder.mTextViewTitle.setText(mList.get(position).getTitle());
+    public void onBindViewHolder(NewsViewHolder holder, final int position) {
+        final NewsModel post = mList.get(position);
+        holder.mTextViewTitle.setText(post.getTitle());
+        holder.bindToPostFav(post, mContext);
         holder.favIcon.setImageDrawable(mContext.getResources().getDrawable(R.mipmap.love_icon4));
+        holder.favIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (post.isFavorite()) {
+                   // post.setFavorite(false);
+                    // favItems.remove(post.getLink());
+                    removeItem(position);
+                    SharedPreference.getInstance(mContext).removeFavorite(mContext, post);
+
+                } /*else {
+                    favIcon.setImageDrawable(
+                            context.getResources().getDrawable(R.mipmap.love_icon4));
+                    post.setFavorite(true);
+                    SharedPreference.getInstance(context).addFavorite(context, post);
+                }
+
+                sendBroadcast(post, context);*/
+
+            }
+        });
     }
 
     public void removeItem(int position) {
