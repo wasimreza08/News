@@ -23,6 +23,9 @@
     <color name="accent">#67b4f4</color>
     <color name="accent_translucent">#BBDEFB</color>
     <color name="accent_bright">#BBDEFB</color>
-
+    <style name="cardPaddingStyle">
+        <item name="android:paddingTop">@dimen/paddingTop</item>
+        <item name="android:paddingBottom">@dimen/paddingBottom</item>
+    </style>
 
 </resources>
