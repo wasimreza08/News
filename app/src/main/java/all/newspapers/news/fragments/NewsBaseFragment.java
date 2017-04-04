@@ -139,6 +139,11 @@ public abstract class NewsBaseFragment extends Fragment {
         mRecycler.setAdapter(adapter);
     }
 
+    public void preferenceChanged(){
+        Log.e("pref", "change on going");
+    }
+
+
     @Override
     public void onDestroyView() {
         if (rootView.getParent() != null) {

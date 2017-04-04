@@ -1,11 +1,15 @@
 package all.newspapers.news;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -34,10 +38,11 @@ import java.util.Observer;
 
 import all.newspapers.news.fragments.FavoriteFragment;
 import all.newspapers.news.fragments.MagazineFragment;
+import all.newspapers.news.fragments.NewsBaseFragment;
 import all.newspapers.news.fragments.NewsFragment;
 import all.newspapers.news.observer.FilterManager;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
     private DrawerLayout drawerLayout;
     private RelativeLayout content;
     private NavigationView navigationView;
@@ -48,6 +53,26 @@ public class MainActivity extends AppCompatActivity {
 //    private static ActivityName instance;
 
     private  FilterManager filterManager;
+    private SharedPreferences.OnSharedPreferenceChangeListener preferenceChangeListener;
+
+    private BroadcastReceiver responseReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+          /*  Bundle bundle = intent.getExtras();
+            Newspaper newspaper = (Newspaper) bundle.getSerializable("value");*/
+            Log.e("pref", "preference changed" );
+            int size = adapter.mFragmentList.size();
+            for(int i = 0; i < size; i++){
+                Fragment item = adapter.mFragmentList.get(i);
+                if(item instanceof NewsBaseFragment){
+                    ((NewsBaseFragment) item).preferenceChanged();
+                } else if(item instanceof FavoriteFragment){
+                    ((FavoriteFragment) item).preferenceChanged();
+                }
+            }
+        }
+    };
 
 
     @Override
@@ -100,10 +125,40 @@ public class MainActivity extends AppCompatActivity {
             tab.select();
         }
 
+        preferenceChangeListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
+            @Override
+            public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
+                Log.e("pref", "preference changed" + s);
+                int size = adapter.mFragmentList.size();
+                for(int i = 0; i < size; i++){
+                    Fragment item = adapter.mFragmentList.get(i);
+                    if(item instanceof NewsBaseFragment){
+                        ((NewsBaseFragment) item).preferenceChanged();
+                    } else if(item instanceof FavoriteFragment){
+                        ((FavoriteFragment) item).preferenceChanged();
+                    }
+                }
+            }
+        };
+
+        IntentFilter filter = new IntentFilter();
+        filter.addAction("com.example.broadcast.MY_NOTIFICATION");
+        registerReceiver(responseReceiver, filter);
+
+        PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).registerOnSharedPreferenceChangeListener(preferenceChangeListener);
+
     }
+
+
+
 
     public  FilterManager getFilterManager() {
         return filterManager; // return the observable class
+    }
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
+        Log.e("pref", "preference changed" + s);
     }
 
     class ViewPagerAdapter extends FragmentStatePagerAdapter {
@@ -150,6 +205,18 @@ public class MainActivity extends AppCompatActivity {
         public CharSequence getPageTitle(int position) {
             return mFragmentTitleList.get(position);
         }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
+
+    @Override
+    protected void onDestroy() {
+        PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).unregisterOnSharedPreferenceChangeListener(preferenceChangeListener);
+        unregisterReceiver(responseReceiver);
+        super.onDestroy();
     }
 
     private void setupViewPager(ViewPager viewPager) {

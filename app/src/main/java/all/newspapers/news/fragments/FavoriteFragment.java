@@ -70,7 +70,7 @@ public class FavoriteFragment extends Fragment implements Observer {
         super.onCreate(savedInstanceState);
         IntentFilter filter = new IntentFilter();
         filter.addAction("com.example.broadcast.MY_NOTIFICATION");
-        getActivity().registerReceiver(responseReceiver, filter);
+      //  getActivity().registerReceiver(responseReceiver, filter);
     }
 
     @Override
@@ -89,6 +89,11 @@ public class FavoriteFragment extends Fragment implements Observer {
             mRecycler.setLayoutManager(mManager);
         }
         return rootView;
+    }
+
+    public void preferenceChanged(){
+        Log.e("pref", "change on going");
+        reloadItem();
     }
 
     @Override
@@ -129,6 +134,9 @@ public class FavoriteFragment extends Fragment implements Observer {
 
     private void reloadItem(){
         Log.e("pref", "prefernce chnaged");
+        if(getActivity() == null){
+            return;
+        }
         favList.clear();
         favList = SharedPreference.getInstance(getActivity().getApplicationContext()).loadFavorites(getActivity());
         mAdapter.addItem(favList);
@@ -158,7 +166,7 @@ public class FavoriteFragment extends Fragment implements Observer {
     @Override
     public void onDestroy() {
         prefs.unregisterOnSharedPreferenceChangeListener(listener);
-        getActivity().unregisterReceiver(responseReceiver);
+        //getActivity().unregisterReceiver(responseReceiver);
         super.onDestroy();
     }
 
