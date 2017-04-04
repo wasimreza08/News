@@ -87,6 +87,7 @@ public class NewsViewHolder extends RecyclerView.ViewHolder {
             }
         });
 
+
     }
 
     private void loadWebView(NewsModel post, Context context) {
@@ -113,7 +114,7 @@ public class NewsViewHolder extends RecyclerView.ViewHolder {
                 .show(post.getLink());
     }
 
-    private void sendBroadcast(NewsModel newspaper, Context context) {
+    public void sendBroadcast(NewsModel newspaper, Context context) {
         Intent intent = new Intent();
         intent.setAction("com.example.broadcast.MY_NOTIFICATION");
         /*

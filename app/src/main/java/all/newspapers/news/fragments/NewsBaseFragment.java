@@ -141,6 +141,18 @@ public abstract class NewsBaseFragment extends Fragment {
 
     public void preferenceChanged(){
         Log.e("pref", "change on going");
+        if(getActivity() == null){
+            return;
+        }
+        ArrayList<NewsModel>favList = SharedPreference.getInstance(getActivity().getApplicationContext()).loadFavorites(getActivity());
+        if(favList.size() == 0){
+            adapter.unFavAll();
+            return;
+        }
+        for(NewsModel model : favList){
+            adapter.updateItem(model);
+        }
+
     }
 
 

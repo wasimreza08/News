@@ -1,6 +1,7 @@
 package all.newspapers.news.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -39,7 +40,7 @@ public class FavoriteAdapter extends RecyclerView.Adapter<NewsViewHolder> {
     }
 
     @Override
-    public void onBindViewHolder(NewsViewHolder holder, final int position) {
+    public void onBindViewHolder(final NewsViewHolder holder, final int position) {
         final NewsModel post = mList.get(position);
         holder.mTextViewTitle.setText(post.getTitle());
         holder.bindToPostFav(post, mContext);
@@ -58,12 +59,22 @@ public class FavoriteAdapter extends RecyclerView.Adapter<NewsViewHolder> {
                             context.getResources().getDrawable(R.mipmap.love_icon4));
                     post.setFavorite(true);
                     SharedPreference.getInstance(context).addFavorite(context, post);
-                }
+                }*/
 
-                sendBroadcast(post, context);*/
+                holder.sendBroadcast(post, mContext);
 
             }
         });
+    }
+
+    public void sendBroadcast(NewsModel newspaper, Context context) {
+        Intent intent = new Intent();
+        intent.setAction("com.example.broadcast.MY_NOTIFICATION");
+        /*
+         * Bundle bundle = new Bundle(); bundle.putSerializable("value", (Serializable) newspaper);
+         * intent.putExtras(bundle);
+         */
+        context.sendBroadcast(intent);
     }
 
     public void removeItem(int position) {
