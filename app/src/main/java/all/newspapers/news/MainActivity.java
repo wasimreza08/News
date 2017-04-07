@@ -36,6 +36,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Observer;
 
+import all.newspapers.news.ads.GoogleAds;
+import all.newspapers.news.app.OnApplication;
 import all.newspapers.news.fragments.FavoriteFragment;
 import all.newspapers.news.fragments.MagazineFragment;
 import all.newspapers.news.fragments.NewsBaseFragment;
@@ -65,9 +67,11 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
             int size = adapter.mFragmentList.size();
             for(int i = 0; i < size; i++){
                 Fragment item = adapter.mFragmentList.get(i);
-                if(item instanceof NewsBaseFragment){
-                    ((NewsBaseFragment) item).preferenceChanged();
-                } else if(item instanceof FavoriteFragment){
+                if(item instanceof NewsFragment){
+                    ((NewsFragment) item).preferenceChanged();
+                } else if(item instanceof MagazineFragment){
+                    ((MagazineFragment) item).preferenceChanged();
+                }else if(item instanceof FavoriteFragment){
                     ((FavoriteFragment) item).preferenceChanged();
                 }
             }
@@ -88,6 +92,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         filterManager = new FilterManager();
         setupViewPager(viewPager);
+        GoogleAds.getGoogleAds(this).requestNewInterstitial();
         ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.app_name, R.string.app_name) {
 
             @Override
@@ -132,9 +137,11 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
                 int size = adapter.mFragmentList.size();
                 for(int i = 0; i < size; i++){
                     Fragment item = adapter.mFragmentList.get(i);
-                    if(item instanceof NewsBaseFragment){
-                        ((NewsBaseFragment) item).preferenceChanged();
-                    } else if(item instanceof FavoriteFragment){
+                    if(item instanceof NewsFragment){
+                        ((NewsFragment) item).preferenceChanged();
+                    } else if(item instanceof MagazineFragment){
+                        ((MagazineFragment) item).preferenceChanged();
+                    }else if(item instanceof FavoriteFragment){
                         ((FavoriteFragment) item).preferenceChanged();
                     }
                 }

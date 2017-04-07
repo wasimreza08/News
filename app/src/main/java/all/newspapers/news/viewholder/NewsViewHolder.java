@@ -17,6 +17,8 @@ import com.thefinestartist.finestwebview.FinestWebView;
 import java.util.ArrayList;
 
 import all.newspapers.news.R;
+import all.newspapers.news.ads.GoogleAds;
+import all.newspapers.news.app.OnApplication;
 import all.newspapers.news.model.NewsModel;
 import all.newspapers.news.preference.SharedPreference;
 
@@ -49,7 +51,6 @@ public class NewsViewHolder extends RecyclerView.ViewHolder {
         itemCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 loadWebView(post, context);
             }
         });
@@ -91,6 +92,8 @@ public class NewsViewHolder extends RecyclerView.ViewHolder {
     }
 
     private void loadWebView(NewsModel post, Context context) {
+        GoogleAds.getGoogleAds(context).showInterstitial();
+        GoogleAds.getGoogleAds(context).requestNewInterstitial();
         new FinestWebView.Builder(context).theme(R.style.FinestWebViewTheme)
                 .titleDefault(post.getTitle())
                 .showUrl(false)

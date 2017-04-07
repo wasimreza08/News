@@ -80,6 +80,9 @@ public abstract class NewsBaseFragment extends Fragment {
         Log.e("Query", postsQuery+"");
         adapter = new CommonNewsAdapter(getActivity(), mList);
         final ArrayList<NewsModel> fav = SharedPreference.getInstance(getActivity().getApplicationContext()).loadFavorites(getActivity().getApplicationContext());
+        if(!mList.isEmpty()){
+            adapter.updateItem(fav);
+        }
         postsQuery.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
@@ -139,21 +142,7 @@ public abstract class NewsBaseFragment extends Fragment {
         mRecycler.setAdapter(adapter);
     }
 
-    public void preferenceChanged(){
-        Log.e("pref", "change on going");
-        if(getActivity() == null){
-            return;
-        }
-        ArrayList<NewsModel>favList = SharedPreference.getInstance(getActivity().getApplicationContext()).loadFavorites(getActivity());
-        if(favList.size() == 0){
-            adapter.unFavAll();
-            return;
-        }
-        for(NewsModel model : favList){
-            adapter.updateItem(model);
-        }
 
-    }
 
 
     @Override

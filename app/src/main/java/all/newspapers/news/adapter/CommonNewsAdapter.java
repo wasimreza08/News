@@ -49,17 +49,20 @@ public class CommonNewsAdapter extends RecyclerView.Adapter<NewsViewHolder> {
         notifyItemRangeChanged(position, mList.size());
     }
 
-    public void unFavAll(){
+    private void unFavAll(){
         for(NewsModel model : mList) {
             model.setFavorite(false);
         }
     }
 
-    public void updateItem(NewsModel item){
-        for(NewsModel model : mList){
-           // model.setFavorite(false);
-            if(item.getLink().equals(model.getLink())){
-                model.setFavorite(item.isFavorite());
+    public void updateItem(ArrayList<NewsModel> favList){
+        unFavAll();
+       //int size = Math.max(favList.size(), mList.size());
+        for(int i=0; i<favList.size(); i++){
+            for(int j=0; j<mList.size(); j++){
+                if(mList.get(j).getLink().equals(favList.get(i).getLink())){
+                    mList.get(j).setFavorite(favList.get(i).isFavorite());
+                }
             }
         }
 
