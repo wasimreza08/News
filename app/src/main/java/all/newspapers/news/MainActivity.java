@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.NavigationView;
@@ -31,16 +30,14 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
+import com.thefinestartist.finestwebview.ads.GoogleAds;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observer;
 
-import all.newspapers.news.ads.GoogleAds;
-import all.newspapers.news.app.OnApplication;
 import all.newspapers.news.fragments.FavoriteFragment;
 import all.newspapers.news.fragments.MagazineFragment;
-import all.newspapers.news.fragments.NewsBaseFragment;
 import all.newspapers.news.fragments.NewsFragment;
 import all.newspapers.news.observer.FilterManager;
 

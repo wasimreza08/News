@@ -4,7 +4,6 @@ package all.newspapers.news.viewholder;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageView;
@@ -13,12 +12,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.thefinestartist.finestwebview.FinestWebView;
-
-import java.util.ArrayList;
+import com.thefinestartist.finestwebview.ads.GoogleAds;
 
 import all.newspapers.news.R;
-import all.newspapers.news.ads.GoogleAds;
-import all.newspapers.news.app.OnApplication;
 import all.newspapers.news.model.NewsModel;
 import all.newspapers.news.preference.SharedPreference;
 

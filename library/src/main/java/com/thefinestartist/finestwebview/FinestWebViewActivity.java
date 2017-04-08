@@ -941,13 +941,13 @@ public class FinestWebViewActivity extends AppCompatActivity
     layoutViews();
     initializeViews();
     GoogleAds.getGoogleAds(getApplicationContext()).requestNewInterstitial();
-    //GoogleAds.getGoogleAds(getApplicationContext()).showInterstitial();
+    GoogleAds.getGoogleAds(getApplicationContext()).showInterstitial();
     new Handler().postDelayed(new Runnable() {
       @Override
       public void run() {
-        GoogleAds.getGoogleAds(getApplicationContext()).showInterstitial();
+    //    GoogleAds.getGoogleAds(getApplicationContext()).showInterstitial();
       }
-    }, 2000);
+    }, 500);
   }
 
   @Override public void onBackPressed() {
