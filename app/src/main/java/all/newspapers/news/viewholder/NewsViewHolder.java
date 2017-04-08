@@ -92,7 +92,6 @@ public class NewsViewHolder extends RecyclerView.ViewHolder {
     }
 
     private void loadWebView(NewsModel post, Context context) {
-        GoogleAds.getGoogleAds(context).showInterstitial();
         GoogleAds.getGoogleAds(context).requestNewInterstitial();
         new FinestWebView.Builder(context).theme(R.style.FinestWebViewTheme)
                 .titleDefault(post.getTitle())

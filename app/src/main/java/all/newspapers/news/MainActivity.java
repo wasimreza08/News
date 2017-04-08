@@ -92,7 +92,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         filterManager = new FilterManager();
         setupViewPager(viewPager);
-        GoogleAds.getGoogleAds(this).requestNewInterstitial();
+        GoogleAds.getGoogleAds(getApplicationContext()).requestNewInterstitial();
         ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.app_name, R.string.app_name) {
 
             @Override
