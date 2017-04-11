@@ -1,10 +1,12 @@
 package all.newspapers.news.model;
 
+import java.io.Serializable;
+
 /**
  * Created by bjit-16 on 3/31/17.
  */
 
-public class NewsModel {
+public class NewsModel implements Serializable {
     private String title;
     private String link;
 
